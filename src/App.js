@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Weather from './components/weatherCard';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import axios from "axios";
 import './App.css';
 
 
@@ -15,9 +15,9 @@ function App() {
         setLat(position.coords.latitude);
         setLong(position.coords.longitude);
       });
-      await fetch(`${process.env.REACT_APP_API_URL}/weather/?lat=${lat}&lon=${long}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`).then(res => res.json()).then(result => {
-        setData(result)
-        console.log(result);
+      await axios.get(`${process.env.REACT_APP_API_URL}/weather/?lat=${lat}&lon=${long}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`).then(result => {
+        setData(result.data)
+        console.log(result.data);
       })
     }
 
@@ -32,9 +32,7 @@ function App() {
         <Weather weatherData={data}/>
       ): (
         <div>
-          <Dimmer active>
-            <Loader>Loading..</Loader>
-          </Dimmer>
+          
         </div>
       )}
     </div>
